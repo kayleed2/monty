@@ -7,7 +7,7 @@
  * Return: Void
  */
 
-void op_pall(stack_t head, unsigned int i)
+void op_pall(stack_t **head, unsigned int i)
 {
 }
 
@@ -18,7 +18,7 @@ void op_pall(stack_t head, unsigned int i)
  * Return: Void
  */
 
-void op_pint(stack_t head, unsigned int i)
+void op_pint(stack_t **head, unsigned int i)
 {
 }
 
@@ -29,7 +29,7 @@ void op_pint(stack_t head, unsigned int i)
  * Return: Void
  */
 
-void op_pop(stack_t head, unsigned int i)
+void op_pop(stack_t **head, unsigned int i)
 {
 }
 
@@ -40,7 +40,7 @@ void op_pop(stack_t head, unsigned int i)
  * Return: Void
  */
 
-void op_swap(stack_t head, unsigned int i)
+void op_swap(stack_t **head, unsigned int i)
 {
 }
 
@@ -51,6 +51,6 @@ void op_swap(stack_t head, unsigned int i)
  * Return: Void
  */
 
-void op_add(stack_t head, unsigned int i)
+void op_add(stack_t **head, unsigned int i)
 {
 }

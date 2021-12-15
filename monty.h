@@ -31,9 +31,14 @@ typedef struct stack_s
 typedef struct instruction_s
 {
 	char *opcode;
-	void (*f)(stack_t **stack, unsigned int line_number);
+	void (*f)(stack_t **stack, unsigned int line_num);
 } instruction_t;
 
-int (*get_op_func(char *s))(stack_t stack, unsigned int line_num);
+int (*get_op_func(char *s))(stack_t **head, unsigned int line_num);
+void op_pall(stack_t **head, unsigned int i);
+void op_pint(stack_t **head, unsigned int i);
+void op_pop(stack_t **head, unsigned int i);
+void op_swap(stack_t **head, unsigned int i);
+void op_add(stack_t **head, unsigned int i);
 
 #endif
