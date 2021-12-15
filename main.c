@@ -12,10 +12,19 @@ int main(int ac, char *argv[])
 {
 	FILE *file;
 	ssize_t read;
-	char *str = NULL;
+	char *op, *str = NULL;
 	size_t len = 0;
-	int i, n;
+	int num, check;
+	unsigned int i;
+	char *op_func;
+	stack_t **new, **head = malloc(sizeof(stack_t));
 
+
+	if (!head)
+	{
+		fprintf("Error: malloc failed\n");
+		exit(EXIT_FAILURE);
+	}
 	if (ac != 2)
 	{
 		fprintf(stderr, "USAGE: monty file\n");
@@ -26,15 +35,43 @@ int main(int ac, char *argv[])
 		fprintf(stderr, "Error: Can't open file %s\n", argv[1]);
 		exit(EXIT_FAILURE);
 	}
-	for (i = 1; (read = getline(&str, &len, file)) != -1; i++)
-	{
-		for (n = 0; str[n] != '\n'; n++)
-		{
-			if (str[n] == 'w')
-			{
-				printf("We are at a w: %s\n", str);
-				break;
-			}
-		}
-	}
+	for (i = 1; (check = fscanf(file, "%s", op)) != -1; i++)
+	  {
+		  if (strcmp(op, "push") == 0)
+		  {
+			  check = fscanf(file, "%d", &num);
+			  if (check == 1)
+			  {
+				  new = malloc(sizeof(stack_t));
+				  if (!new)
+				  {
+					  fprintf("Error: malloc failed\n");
+					  exit(EXIT_FAILURE);
+				  }
+				  *new->n = num;
+				  *new->prev = NULL;
+				  *new->next = head;
+				  *head = *new;
+			  }
+			  else
+			  {
+				  fprintf(stderr, "L%d: usage: push integer\n", i);
+				  exit(EXIT_FAILURE);
+			  }
+		  }
+		  else
+		  {
+			  op_func = get_op_func(op);
+			  if (op_func != NULL)
+			  {
+				  op_func(head, i);
+			  }
+			  else if (op_func == NULL)
+			  {
+				  fprintf(stderr, "L%d: unknown instruction %s\n", i, op);
+				  exit(EXIT_FAILURE);
+			  }
+		  }
+	  }
+	return (0);
 }
