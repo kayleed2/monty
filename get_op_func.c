@@ -5,9 +5,9 @@
  * Return: Pointer to correct op function
  */
 
-int (*get_op_func(char *s))(stack_t **stack, unsigned int line_num)
+void (*get_op_func(char *s))(stack_t **head, unsigned int line_num)
 {
-	instruction_t opcode[] = {
+	instruction_t op_code[] = {
 		{"pall", op_pall},
 		{"pint", op_pint},
 		{"pop", op_pop},
@@ -17,9 +17,9 @@ int (*get_op_func(char *s))(stack_t **stack, unsigned int line_num)
 	};
 	int i = 0;
 
-	while (ops[i].opcode != NULL && *(ops[i].opcode) != *s)
+	while (op_code[i].opcode != NULL && *(op_code[i].opcode) != *s)
 	{
 		i++;
 	}
-	return (ops[i].f);
+	return (op_code[i].f);
 }

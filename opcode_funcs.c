@@ -53,4 +53,26 @@ void op_swap(stack_t **head, unsigned int i)
 
 void op_add(stack_t **head, unsigned int i)
 {
+	int a, b, sum;
+	stack_t **tmp;
+
+	*tmp = (*head)->next;
+	if (*tmp == NULL)
+	{
+		fprintf(stderr, "L%d: can't add, stack too short", i);
+		exit(EXIT_FAILURE);
+	}
+
+	a = (*head)->n;
+	b = (*tmp)->n;
+	sum = a + b;
+
+	*head = *tmp;
+	(*head)->prev = NULL;
+	free((*tmp)->next);
+	free((*tmp)->prev);
+	free(*tmp);
+
+
+
 }

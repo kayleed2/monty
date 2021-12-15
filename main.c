@@ -16,13 +16,13 @@ int main(int ac, char *argv[])
 	size_t len = 0;
 	int num, check;
 	unsigned int i;
-	char *op_func;
+	void (*op_func)(stack_t **, unsigned int);
 	stack_t **new, **head = malloc(sizeof(stack_t));
 
 
 	if (!head)
 	{
-		fprintf("Error: malloc failed\n");
+		fprintf(stderr, "Error: malloc failed\n");
 		exit(EXIT_FAILURE);
 	}
 	if (ac != 2)
@@ -31,7 +31,7 @@ int main(int ac, char *argv[])
 		exit(EXIT_FAILURE);
 	}
 	file = fopen(argv[1], "r");
-	if ((file  == NULL)
+	if (file  == NULL)
 	{
 		fprintf(stderr, "Error: Can't open file %s\n", argv[1]);
 		exit(EXIT_FAILURE);
@@ -46,12 +46,12 @@ int main(int ac, char *argv[])
 				  new = malloc(sizeof(stack_t));
 				  if (!new)
 				  {
-					  fprintf("Error: malloc failed\n");
+					  fprintf(stderr, "Error: malloc failed\n");
 					  exit(EXIT_FAILURE);
 				  }
-				  *new->n = num;
-				  *new->prev = NULL;
-				  *new->next = head;
+				  (*new)->n = num;
+				  (*new)->prev = NULL;
+				  (*new)->next = *head;
 				  *head = *new;
 			  }
 			  else
@@ -62,6 +62,7 @@ int main(int ac, char *argv[])
 		  }
 		  else
 		  {
+			  printf("entering get_op\n");
 			  op_func = get_op_func(op);
 			  if (op_func != NULL)
 			  {
