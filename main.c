@@ -12,8 +12,8 @@ int main(int ac, char *argv[])
 {
 	FILE *file;
 	char op[30];
-	int num, check;
-	unsigned int i;
+	int num, check, get;
+	unsigned int i = 1;
 	void (*op_func)(stack_t **, unsigned int);
 	stack_t **head = malloc(sizeof(stack_t));
 
@@ -24,8 +24,10 @@ int main(int ac, char *argv[])
 	file = fopen(argv[1], "r");
 	if (file  == NULL)
 		fprintf(stderr, "Error: Can't open file %s\n", argv[1]), exit(EXIT_FAILURE);
-	for (i = 1; (check = fscanf(file, "%s", op)) != -1; i++)
+	while ((get = fgetc(file)) != -1)
 	{
+		ungetc(get, file);
+		fscanf(file, "%s", op);
 		if (strcmp(op, "nop") == 0)
 			continue;
 		else if (strcmp(op, "push") == 0)
@@ -47,6 +49,9 @@ int main(int ac, char *argv[])
 				exit(EXIT_FAILURE);
 			}
 		}
+		while (fgetc(file) != '\n')
+			;
+		i++;
 	}
 	return (0);
 }
