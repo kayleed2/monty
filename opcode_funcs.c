@@ -118,13 +118,10 @@ void op_add(stack_t **head, unsigned int i)
 	b = tmp->n;
 	sum = a + b;
 
+	tmp->n = sum;
+	tmp->prev = NULL;
+	free(*head);
 	*head = tmp;
-	(*head)->n = sum;
-	(*head)->prev = NULL;
-	free(tmp->next);
-	free(tmp->prev);
-	free(tmp);
-
 
 
 }
