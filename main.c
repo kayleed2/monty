@@ -12,12 +12,12 @@ int main(int ac, char *argv[])
 {
 	FILE *file;
 	ssize_t read;
-	char *op, *str = NULL;
+	char op[30], *str = NULL;
 	size_t len = 0;
 	int num, check;
 	unsigned int i;
 	void (*op_func)(stack_t **, unsigned int);
-	stack_t **new, **head = malloc(sizeof(stack_t));
+	stack_t *new, **head = malloc(sizeof(stack_t));
 
 
 	if (!head)
@@ -49,10 +49,10 @@ int main(int ac, char *argv[])
 					  fprintf(stderr, "Error: malloc failed\n");
 					  exit(EXIT_FAILURE);
 				  }
-				  (*new)->n = num;
-				  (*new)->prev = NULL;
-				  (*new)->next = *head;
-				  *head = *new;
+				  new->n = num;
+				  new->prev = NULL;
+				  new->next = *head;
+				  *head = new;
 			  }
 			  else
 			  {
@@ -62,7 +62,6 @@ int main(int ac, char *argv[])
 		  }
 		  else
 		  {
-			  printf("entering get_op\n");
 			  op_func = get_op_func(op);
 			  if (op_func != NULL)
 			  {
