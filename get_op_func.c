@@ -17,7 +17,7 @@ void (*get_op_func(char *s))(stack_t **head, unsigned int line_num)
 	};
 	int i = 0;
 
-	while (op_code[i].opcode != NULL && *(op_code[i].opcode) != *s)
+	while (op_code[i].opcode != NULL && strcmp((op_code[i].opcode), s) != 0)
 	{
 		i++;
 	}
