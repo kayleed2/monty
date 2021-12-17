@@ -55,9 +55,6 @@ void op_pop(stack_t **head, unsigned int i)
 	tmp = (*head)->next;
 	free(*head);
 	*head = tmp;
-	(*head)->prev = NULL;
-
-
 }
 
 /**

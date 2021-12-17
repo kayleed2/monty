@@ -33,9 +33,9 @@ typedef struct instruction_s
 	char *opcode;
 	void (*f)(stack_t **stack, unsigned int line_num);
 } instruction_t;
-
+char **splitter(char fun[]);
 void (*get_op_func(char *s))(stack_t **head, unsigned int line_num);
-void op_push(stack_t **head, int num);
+void op_push(stack_t **head, char *str, unsigned int i);
 void op_pall(stack_t **head, unsigned int i);
 void op_pint(stack_t **head, unsigned int i);
 void op_pop(stack_t **head, unsigned int i);
