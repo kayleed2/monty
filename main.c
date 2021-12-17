@@ -46,7 +46,7 @@ int main(int ac, char *argv[])
 			else
 			{
 				if (head != NULL)
-					free_listint2(head);
+					free_listint2(head), free(head);
 				else
 					free(head);
 				fclose(file), free(op), fprintf(stderr, "L%d: usage: push integer\n", i), exit(EXIT_FAILURE);
@@ -55,7 +55,7 @@ int main(int ac, char *argv[])
 		else
 		{
 			op_func = get_op_func(op[0]), (op_func != NULL) ? (op_func(head, i)) :
-				(fprintf(stderr, "L%d: unknown instruction %s\n", i, op[0]), fclose(file), free_listint2(head), free(op),
+				(fprintf(stderr, "L%d: unknown instruction %s\n", i, op[0]), fclose(file), free_listint2(head), free(head), free(op),
 			exit(EXIT_FAILURE));
 		}
 		free(op), i++;
@@ -85,7 +85,7 @@ void op_push(stack_t **head, char *str, unsigned int i)
 		{
 			fprintf(stderr, "L%d: usage: push integer\n", i);
 			if (head != NULL)
-				free_listint2(head);
+				free_listint2(head), free(head);
 			else
 				free(head);
 			exit(EXIT_FAILURE);
@@ -95,7 +95,7 @@ void op_push(stack_t **head, char *str, unsigned int i)
 	if (!new)
 	{
 		fprintf(stderr, "Error: malloc failed\n");
-		free_listint2(head), exit(EXIT_FAILURE);
+		free_listint2(head), free(head), exit(EXIT_FAILURE);
 	}
 	new->n = num;
 	new->prev = NULL;
