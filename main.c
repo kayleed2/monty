@@ -11,8 +11,7 @@
 int main(int ac, char *argv[])
 {
 	FILE *file;
-	char op[30];
-	int num, check, get;
+	char str[1000], **op;
 	unsigned int i = 1;
 	void (*op_func)(stack_t **, unsigned int);
 	stack_t **head = malloc(sizeof(stack_t));
@@ -22,37 +21,35 @@ int main(int ac, char *argv[])
 	if (ac != 2)
 		fprintf(stderr, "USAGE: monty file\n"),	exit(EXIT_FAILURE);
 	file = fopen(argv[1], "r");
-	if (file  == NULL)
+	if (file == NULL)
 		fprintf(stderr, "Error: Can't open file %s\n", argv[1]), exit(EXIT_FAILURE);
-	while ((get = fgetc(file)) != -1)
+
+	while (fgets(str, sizeof(str), file) != NULL)
 	{
-		ungetc(get, file);
-		fscanf(file, "%s", op);
-		if (strcmp(op, "nop") == 0)
+		if (str[strlen(str) - 1] == '\n')
+			str[strlen(str) - 1] = '\0';
+		op = splitter(str);
+		if (op[0] == NULL)
 			continue;
-		else if (strcmp(op, "push") == 0)
+		else if (strcmp(op[0], "nop") == 0)
+			continue;
+		else if (strcmp(op[0], "push") == 0)
 		{
-			check = fscanf(file, "%d", &num);
-			if (check == 1)
-				op_push(head, num);
+ 			if (op[1] != NULL)
+				op_push(head, op[1], i);
 			else
 				fprintf(stderr, "L%d: usage: push integer\n", i), exit(EXIT_FAILURE);
 		}
 		else
 		{
-			op_func = get_op_func(op);
-			if (op_func != NULL)
-				op_func(head, i);
-			else
-			{
-				fprintf(stderr, "L%d: unknown instruction %s\n", i, op);
-				exit(EXIT_FAILURE);
-			}
+			op_func = get_op_func(op[0]);
+			(op_func != NULL) ? (op_func(head, i)) :
+			(fprintf(stderr, "L%d: unknown instruction %s\n", i, op[0]),
+			exit(EXIT_FAILURE));
 		}
-		while (fgetc(file) != '\n')
-			;
 		i++;
 	}
+	fclose(file);
 	return (0);
 }
 
@@ -62,9 +59,17 @@ int main(int ac, char *argv[])
  * @num: number to add
  * Return: Void
  */
-void op_push(stack_t **head, int num)
+void op_push(stack_t **head, char *str, unsigned int i)
 {
 	stack_t *new;
+	int num;
+
+	num = atoi(str);
+	if (num == 0)
+	{
+		fprintf(stderr, "L%d: usage: push integer\n", i);
+		exit(EXIT_FAILURE);
+	}
 
 	new = malloc(sizeof(stack_t));
 	if (!new)
