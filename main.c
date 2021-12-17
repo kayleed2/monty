@@ -23,7 +23,7 @@ int main(int ac, char *argv[])
 	file = fopen(argv[1], "r");
 	if (file == NULL)
 		fprintf(stderr, "Error: Can't open file %s\n", argv[1]), exit(EXIT_FAILURE);
-
+	*head = NULL;
 	while (fgets(str, sizeof(str), file) != NULL)
 	{
 		if (str[strlen(str) - 1] == '\n')
@@ -35,15 +35,14 @@ int main(int ac, char *argv[])
 			continue;
 		else if (strcmp(op[0], "push") == 0)
 		{
- 			if (op[1] != NULL)
+			if (op[1] != NULL)
 				op_push(head, op[1], i);
 			else
 				fprintf(stderr, "L%d: usage: push integer\n", i), exit(EXIT_FAILURE);
 		}
 		else
 		{
-			op_func = get_op_func(op[0]);
-			(op_func != NULL) ? (op_func(head, i)) :
+			op_func = get_op_func(op[0]), (op_func != NULL) ? (op_func(head, i)) :
 			(fprintf(stderr, "L%d: unknown instruction %s\n", i, op[0]),
 			exit(EXIT_FAILURE));
 		}
@@ -56,7 +55,8 @@ int main(int ac, char *argv[])
 /**
  * op_push - Adds a new element to the stack
  * @head: the stack
- * @num: number to add
+ * @str: String pushed
+ * @i: Value given
  * Return: Void
  */
 void op_push(stack_t **head, char *str, unsigned int i)
