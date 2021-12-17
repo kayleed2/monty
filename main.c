@@ -30,9 +30,15 @@ int main(int ac, char *argv[])
 			str[strlen(str) - 1] = '\0';
 		op = splitter(str);
 		if (op[0] == NULL)
+		{
+			free(op);
 			continue;
+		}
 		else if (strcmp(op[0], "nop") == 0)
+		{
+			free(op);
 			continue;
+		}
 		else if (strcmp(op[0], "push") == 0)
 		{
 			if (op[1] != NULL)
@@ -54,7 +60,7 @@ int main(int ac, char *argv[])
 		}
 		free(op), i++;
 	}
-	free_listint2(head), fclose(file);
+	free_listint2(head); free(head), fclose(file);
 	return (0);
 }
 
