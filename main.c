@@ -7,7 +7,6 @@
  *
  * Return: 0 on success, exit status on failure
  */
-
 int main(int ac, char *argv[])
 {
 	FILE *file;
