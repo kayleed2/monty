@@ -13,7 +13,7 @@ char **splitter(char *str)
 	char **holder = NULL;
 
 	holder = malloc(sizeof(char *) * (len * 2));
-	string = strtok(str, " ");
+	string = strtok(str, " \t");
 	for (i = 0; string != NULL; i++)
 	{
 		holder[i] = string;

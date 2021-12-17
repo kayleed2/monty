@@ -42,7 +42,7 @@ int main(int ac, char *argv[])
 				if (head != NULL)
 					free_listint2(head);
 				else
-					printf("In else\n"), free(head);
+					free(head);
 				fclose(file), free(op), fprintf(stderr, "L%d: usage: push integer\n", i), exit(EXIT_FAILURE);
 			}
 		}
