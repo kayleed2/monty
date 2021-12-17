@@ -59,7 +59,7 @@ int main(int ac, char *argv[])
 		}
 		free(op), i++;
 	}
-	free_listint2(head), free(head), fclose(file);
+	free_listint2(head); free(head), fclose(file);
 	return (0);
 }
 
