@@ -17,12 +17,12 @@ int main(int ac, char *argv[])
 	stack_t **head = malloc(sizeof(stack_t));
 
 	if (!head)
-		fprintf(stderr, "Error: malloc failed\n"), exit(EXIT_FAILURE);
+	  fprintf(stderr, "Error: malloc failed\n"), exit(EXIT_FAILURE);
 	if (ac != 2)
-		fprintf(stderr, "USAGE: monty file\n"),	exit(EXIT_FAILURE);
+		free(head), fprintf(stderr, "USAGE: monty file\n"), exit(EXIT_FAILURE);
 	file = fopen(argv[1], "r");
 	if (file == NULL)
-		fprintf(stderr, "Error: Can't open file %s\n", argv[1]), exit(EXIT_FAILURE);
+		free(head), fprintf(stderr, "Error: Can't open file %s\n", argv[1]), exit(EXIT_FAILURE);
 	*head = NULL;
 	while (fgets(str, sizeof(str), file) != NULL)
 	{
@@ -38,17 +38,23 @@ int main(int ac, char *argv[])
 			if (op[1] != NULL)
 				op_push(head, op[1], i);
 			else
-				fprintf(stderr, "L%d: usage: push integer\n", i), exit(EXIT_FAILURE);
+			{
+				if (head != NULL)
+					free_listint2(head);
+				else
+					printf("In else\n"), free(head);
+				fclose(file), free(op), fprintf(stderr, "L%d: usage: push integer\n", i), exit(EXIT_FAILURE);
+			}
 		}
 		else
 		{
 			op_func = get_op_func(op[0]), (op_func != NULL) ? (op_func(head, i)) :
-			(fprintf(stderr, "L%d: unknown instruction %s\n", i, op[0]),
+				(fprintf(stderr, "L%d: unknown instruction %s\n", i, op[0]), fclose(file), free_listint2(head), free(op),
 			exit(EXIT_FAILURE));
 		}
-		i++;
+		free(op), i++;
 	}
-	fclose(file);
+	free_listint2(head), fclose(file);
 	return (0);
 }
 
@@ -64,21 +70,32 @@ void op_push(stack_t **head, char *str, unsigned int i)
 	stack_t *new;
 	int num;
 
-	num = atoi(str);
-	if (num == 0)
+	if (strcmp(str, "0") == 0)
+		num = 0;
+	else
 	{
-		fprintf(stderr, "L%d: usage: push integer\n", i);
-		exit(EXIT_FAILURE);
+		num = atoi(str);
+		if (num == 0)
+		{
+			fprintf(stderr, "L%d: usage: push integer\n", i);
+			if (head != NULL)
+				free_listint2(head);
+			else
+				free(head);
+			exit(EXIT_FAILURE);
+		}
 	}
-
 	new = malloc(sizeof(stack_t));
 	if (!new)
 	{
 		fprintf(stderr, "Error: malloc failed\n");
-		exit(EXIT_FAILURE);
+		free_listint2(head), exit(EXIT_FAILURE);
 	}
 	new->n = num;
 	new->prev = NULL;
-	new->next = *head;
+	if (head != NULL)
+		new->next = *head;
+	else
+		new->next = NULL;
 	*head = new;
 }

@@ -33,6 +33,7 @@ typedef struct instruction_s
 	char *opcode;
 	void (*f)(stack_t **stack, unsigned int line_num);
 } instruction_t;
+void free_listint2(stack_t **head);
 char **splitter(char fun[]);
 void (*get_op_func(char *s))(stack_t **head, unsigned int line_num);
 void op_push(stack_t **head, char *str, unsigned int i);
